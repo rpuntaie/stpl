@@ -4,12 +4,15 @@
 import pytest
 from stpl import main
 import os
-import subprocess
+from subprocess import Popen, PIPE
 import sys
 
 from mock import patch
 
-os.environ['PATH']+=":"+os.path.dirname(__file__)
+if 'win' in sys.platform:
+    os.environ['PATH']+=";"+os.path.dirname(__file__)
+else:
+    os.environ['PATH']+=":"+os.path.dirname(__file__)
 
 @pytest.yield_fixture
 def tmpworkdir(tmpdir):
@@ -65,3 +68,12 @@ def test_parse_args(stplfile):
 def test_raise(request):
     with pytest.raises(ValueError):
         main(file_or_string="{{i+j}}",directory='.',code="i=2;j=3")
+
+def test_stdin(request):
+    p=Popen(['stpl','-','-','i=2;j=3'],stdin=PIPE,stdout=PIPE)
+    p.stdin.write(b'{{i+j}}\n')
+    p.stdin.close()
+    p.wait()
+    res=p.stdout.read()
+    assert res==b'5\n'
+
