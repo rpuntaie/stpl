@@ -7,10 +7,10 @@
 import bottle
 import os
 
-def stpl(file_or_string):
+def stpl(file_or_string,**kw):
     return bottle.template(file_or_string
             ,template_lookup = [os.getcwd()]
-            ,**globals()
+            ,**kw
             ) 
 
 def main(**args):
@@ -37,17 +37,21 @@ def main(**args):
     filename = file_or_string = args['file_or_string']
     directory = args['directory']
 
+    file = None
     isfile = os.path.isfile(file_or_string)
     if not isfile and file_or_string == '-':
-        try: # pragma: no cover
-            sys.stdin = codecs.getreader("utf-8")(sys.stdin.detach()) # pragma: no cover
-        except: pass # pragma: no cover
-        file_or_string = sys.stdin.read()# pragma: no cover
+        try:
+            sys.stdin = codecs.getreader("utf-8")(sys.stdin.detach()) 
+        except: pass
+        file_or_string = sys.stdin.read()
     elif isfile:
-        with open(file_or_string,'r',encoding='utf-8') as f:
+        file = file_or_string.replace('\\','/')
+        with open(file,'r',encoding='utf-8') as f:
             file_or_string = f.read()
 
-    result = stpl(file_or_string)
+    g = globals()
+    g['__file__'] = file
+    result = stpl(file_or_string,**g)
 
     outfile = None
     opn = lambda x: open(x,'w',encoding='utf-8')
