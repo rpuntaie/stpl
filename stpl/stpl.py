@@ -9,9 +9,10 @@ import os
 
 def stpl(file_or_string,**kw):
     return bottle.template(file_or_string
-            ,template_lookup = [os.getcwd()]
+            ,template_lookup = [os.getcwd(),os.path.dirname(os.getcwd())]
             ,**kw
             ) 
+
 
 def main(**args):
     import codecs
