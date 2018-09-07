@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-#py.test --cov rstdoc --cov-report term-missing
+#py.test --cov stpl --cov-report term-missing
 
 #sudo python setup.py bdist_wheel
 #twine upload ./dist/stpl*.whl
@@ -34,7 +34,7 @@ setup(name = 'stpl',
         'Topic :: Utilities',
         ],
 
-    install_requires = ['bottle'],
+    install_requires = [],
     extras_require = {'develop': ['mock','pytest','pytest-coverage']},
     long_description = read('readme.rst'),
     packages=['stpl'],
