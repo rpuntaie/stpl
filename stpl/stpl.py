@@ -38,6 +38,7 @@ def main(**args):
     filename = file_or_string = args['file_or_string']
     directory = args['directory']
 
+    htmlout = False
     file = None
     isfile = os.path.isfile(file_or_string)
     if not isfile and file_or_string == '-':
@@ -47,12 +48,12 @@ def main(**args):
         file_or_string = sys.stdin.read()
     elif isfile:
         file = file_or_string.replace('\\','/')
+        htmlout = '.html' in file #file = 'x.html.stpl'
         with open(file,'r',encoding='utf-8') as f:
             file_or_string = f.read()
 
     g = globals()
     g['__file__'] = file
-    result = stpl(file_or_string,**g)
 
     outfile = None
     opn = lambda x: open(x,'w',encoding='utf-8')
@@ -72,6 +73,10 @@ def main(**args):
                 raise ValueError("Either no input file or no output file was given")
         else:
             outfile  = opn(directory)
+        if htmlout:
+            result = stpl(file_or_string,**g)
+        else:
+            result = stpl(file_or_string,template_settings = {'escape_func':lambda x:x},**g)
         outfile.write(result)
     finally:
         if outfile is not None and outfile != sys.stdout:
