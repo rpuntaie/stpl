@@ -137,12 +137,6 @@ class BaseTemplate(object):
     def search(cls, name, lookup=None):
         """ Search name in all directories specified in lookup.
         First without, then with common extensions. Return first hit. """
-        if not lookup:
-            raise depr(0, 12, "Empty template lookup path.", "Configure a template lookup path.")
-
-        if os.path.isabs(name):
-            raise depr(0, 12, "Use of absolute path for template name.",
-                       "Refer to templates with names or paths relative to the lookup path.")
 
         for spath in lookup:
             spath = os.path.abspath(spath) + os.sep
@@ -201,10 +195,9 @@ class SimpleTemplate(BaseTemplate):
         if not source:
             with open(self.filename, 'rb') as f:
                 source = f.read()
-        try:
-            source, encoding = touni(source), 'utf8'
-        except UnicodeError:
-            raise depr(0, 11, 'Unsupported template encodings.', 'Use utf-8 for templates.')
+
+        source, encoding = touni(source), 'utf8'
+
         parser = StplParser(source, encoding=encoding, syntax=self.syntax)
         code = parser.translate()
         self.encoding = parser.encoding

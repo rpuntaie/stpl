@@ -8,7 +8,7 @@
 from setuptools import setup
 import os
 
-__version__ = '1.1.2'
+__version__ = '1.1.3'
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname),encoding='utf-8').read()
