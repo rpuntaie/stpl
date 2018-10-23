@@ -16,7 +16,7 @@ DEBUG = False
 py3k = sys.version_info.major > 2
 if py3k:
     unicode = str
-    from collections import MutableMapping as DictMixin
+    from collections.abc import MutableMapping as DictMixin
 else:  # 2.x
     unicode = unicode
     from collections import MutableMapping as DictMixin
