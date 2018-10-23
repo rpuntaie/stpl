@@ -488,12 +488,13 @@ def main(**args):
                 help='If the input file ends in .stpl this is automatically dropped when a directory is given')
         parser.add_argument('directory', nargs='?',
                 help='If no directory, the result is printed to stdout.')
-        parser.add_argument('code', nargs='?',
-                help='As third parameter python code can define some variables used in the template.')
+        parser.add_argument('code', nargs='*',
+                help='Further parameters are python code, to define variables that can be used during template expansion.')
         args = parser.parse_args().__dict__
 
-    if args['code'] is not None:
-        eval(compile(args['code'],'<string>','exec'),globals())
+    if 'code' in args and args['code'] is not None:
+        code = '\n'.join(args['code'])
+        eval(compile(code,'<string>','exec'),globals())
 
     filename = file_or_string = args['file_or_string']
     directory = args['directory']
