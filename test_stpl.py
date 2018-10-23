@@ -390,7 +390,7 @@ def tmpworkdir(tmpdir):
     os.chdir(cwd)
 
 def test_string(request,capfd):
-    main(file_or_string="{{i+j}}",directory=None,code="i=2;j=3")
+    main(file_or_string="{{i+j}}",directory=None,code=["i=2;j=3"])
     out, err = capfd.readouterr()
     assert out == '5'
 
@@ -403,12 +403,12 @@ def stplfile(tmpworkdir):
     yield 'tst.c.stpl'
 
 def test_file(stplfile,capfd):
-    main(file_or_string=stplfile,directory=None,code="i=2;j=3")
+    main(file_or_string=stplfile,directory=None,code=["i=2;j=3"])
     out, err = capfd.readouterr()
     assert out == '5'
 
 def test_dir(stplfile):
-    main(file_or_string=stplfile,directory='tst.c',code="i=2;j=3")
+    main(file_or_string=stplfile,directory='tst.c',code=["i=2;j=3"])
     assert os.path.isfile('tst.c')
     assert open('tst.c').read()=='5'
 
@@ -422,7 +422,7 @@ def nostplfile(tmpworkdir):
 
 #like inplace
 def test_nostpl(nostplfile):
-    main(file_or_string=nostplfile,directory='.',code="i=2;j=3")
+    main(file_or_string=nostplfile,directory='.',code=["i=2;j=3"])
     assert os.path.isfile('tst.c')
     assert open('tst.c').read()=='5'
 
@@ -435,7 +435,7 @@ def test_parse_args(stplfile):
 
 def test_raise(request):
     with pytest.raises(ValueError):
-        main(file_or_string="{{i+j}}",directory='.',code="i=2;j=3")
+        main(file_or_string="{{i+j}}",directory='.',code=["i=2;j=3"])
 
 def test_stdin(request):
     p=Popen(['stpl','-','-','i=2;j=3'],stdin=PIPE,stdout=PIPE)
