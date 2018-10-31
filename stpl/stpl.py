@@ -10,6 +10,7 @@ import sys
 import os
 import re
 import functools
+import shutil
 
 DEBUG = False
 
@@ -517,23 +518,33 @@ def main(**args):
     g['__file__'] = file
 
     outfile = None
-    opn = lambda x: open(x,'w',encoding='utf-8')
+    opnwrite = lambda x: open(x,'w',encoding='utf-8')
     try:
         if directory is None or directory=='-':
             try:
                 sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
             except: pass
             outfile = sys.stdout
-        elif os.path.isdir(directory):
-            if isfile:
-                if filename.endswith('.stpl'):
-                    outfile  = opn(os.path.join(directory,filename[:-5]))
-                else:
-                    outfile  = opn(os.path.join(directory,filename))
-            else:
-                raise ValueError("Either no input file or no output file was given")
         else:
-            outfile  = opn(directory)
+            if directory.endswith('/') or directory.endswith('\\'):
+                tmpdir = directory
+            else:
+                tmpdir = os.path.dirname(directory)
+            try:
+                os.makedirs(tmpdir)
+            except:
+                pass
+            if os.path.isdir(directory):
+                if isfile:
+                    if filename.endswith('.stpl'):
+                        outfilename = os.path.join(directory,filename[:-5])
+                    else:
+                        outfilename = os.path.join(directory,filename)
+                else:
+                    raise ValueError("Either no input file or no output file was given")
+            else:
+                outfilename = directory
+            outfile  = opnwrite(outfilename)
         if htmlout:
             result = stpl(file_or_string,**g)
         else:
