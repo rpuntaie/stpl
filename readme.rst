@@ -11,7 +11,8 @@ Parameters:
 
 1) file or string or -
 2) optional: directory or - 
-3) optional: python code defining variables
+3) optionally several: python code defining variables
+4) optionally several: -I <include folder>
 
 .. _`bottle`: https://bottlepy.org/docs/dev/stpl.html.
 
