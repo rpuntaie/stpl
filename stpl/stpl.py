@@ -468,11 +468,13 @@ def template(*args, **kwargs):
     return TEMPLATES[tplid].render(kwargs)
 
 
+g_include = []
+
 def stpl(file_or_string,**kw):
     return template(file_or_string
-            ,template_lookup = [os.getcwd(),os.path.dirname(os.getcwd())]
+            ,template_lookup = [os.getcwd(),os.path.dirname(os.getcwd())]+g_include
             ,**kw
-            ) 
+            )
 
 
 def main(**args):
@@ -485,13 +487,18 @@ def main(**args):
                 '''Expands bottle SimpleTemplate. See https://bottlepy.org/docs/dev/stpl.html.
                 - stands for stdin. If not a file, then the string is expanded.
                 ''')
-        parser.add_argument('file_or_string', 
+        parser.add_argument( '-I', action='append', metavar='folder', nargs=1,
+                help='Add folders to look for templates')
+        parser.add_argument('file_or_string',
                 help='If the input file ends in .stpl this is automatically dropped when a directory is given')
         parser.add_argument('directory', nargs='?',
                 help='If no directory, the result is printed to stdout.')
         parser.add_argument('code', nargs='*',
                 help='Further parameters are python code, to define variables that can be used during template expansion.')
         args = parser.parse_args().__dict__
+
+    if 'I' in args and args['I']:
+        g_include[:] = functools.reduce(lambda x,y:x+y,args['I'],[])
 
     if 'code' in args and args['code'] is not None:
         code = '\n'.join(args['code'])
@@ -505,7 +512,7 @@ def main(**args):
     isfile = os.path.isfile(file_or_string)
     if not isfile and file_or_string == '-':
         try:
-            sys.stdin = codecs.getreader("utf-8")(sys.stdin.detach()) 
+            sys.stdin = codecs.getreader("utf-8")(sys.stdin.detach())
         except: pass
         file_or_string = sys.stdin.read()
     elif isfile:
