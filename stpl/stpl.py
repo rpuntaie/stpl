@@ -14,13 +14,11 @@ import shutil
 
 DEBUG = False
 
-py3k = sys.version_info.major > 2
-if py3k:
+if sys.version_info.major > 2:
     unicode = str
     from collections.abc import MutableMapping as DictMixin
-else:  # 2.x
-    unicode = unicode
-    from collections import MutableMapping as DictMixin
+else:
+    raise TemplateError('Python 2.x is not supported.')
 
 TEMPLATE_PATH = ['./', './views/']
 TEMPLATES = {}
@@ -249,7 +247,6 @@ class SimpleTemplate(BaseTemplate):
 
 
 class StplSyntaxError(TemplateError):
-
     pass
 
 
@@ -391,15 +388,18 @@ class StplParser(object):
                     self.paren_depth -= 1
                 code_line += _pc
             elif _blk1:  # Start-block keyword (if/for/while/def/try/...)
-                code_line, self.indent_mod = _blk1, -1
+                code_line = _blk1
                 self.indent += 1
+                self.indent_mod -= 1
             elif _blk2:  # Continue-block keyword (else/elif/except/...)
-                code_line, self.indent_mod = _blk2, -1
-            elif _end:  # The non-standard 'end'-keyword (ends a block)
-                self.indent -= 1
+                code_line = _blk2
+                self.indent_mod -= 1
             elif _cend:  # The end-code-block template token (usually '%>')
                 if multiline: multiline = False
                 else: code_line += _cend
+            elif _end:
+                self.indent -= 1
+                self.indent_mod += 1
             else:  # \n
                 self.write_code(code_line.strip(), comment)
                 self.lineno += 1
@@ -561,6 +561,6 @@ def main(**args):
         if outfile is not None and outfile != sys.stdout:
             outfile.close()
 
-if __name__ == '__main__':
-    main() #pragma: no cover
+if __name__ == '__main__': # pragma: no cover
+    main()
 
