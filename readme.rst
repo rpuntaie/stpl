@@ -8,7 +8,7 @@ stpl(1) Version 1.1.6 \| stpl
 ..
 ..   The generate:
 ..
-..     pandoc readme.rst -s -t man -o stpl.1
+..     pandoc readme.rst -s -t man -o man/stpl.1
 
 NAME
 ====
