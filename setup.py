@@ -34,8 +34,9 @@ for dir in find_dirs('info'):
 for dir in info_pages:
     data_files.append(('share/info', info_pages[dir]))    
 
-
-__version__ = '1.13.1'
+#also in readme.rst
+__version__ = '1.13.2'
+#bottle_major+1.bottle_miner.local_fix
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname),encoding='utf-8').read()
@@ -64,6 +65,9 @@ setup(name = 'stpl',
     install_requires = [],
     extras_require = {'develop': ['mock','pytest','pytest-coverage']},
     long_description = read('readme.rst'),
+    ##to check with ``restview --pypi-strict long_description.rst``
+    #with open('long_description.rst','w',encoding='utf-8') as f:
+    #    f.write(long_description)
     packages=['stpl'],
     include_package_data=True,
     exclude_package_data={'': ['*.pyc']},
