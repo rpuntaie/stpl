@@ -4,11 +4,11 @@ stpl(1) Version 1.13.2 \| stpl
 
 ..   To test man page:
 ..
-..     pandoc readme.rst -s -t man | /usr/bin/man -l -
+..     pandoc README.rst -s -t man | /usr/bin/man -l -
 ..
 ..   The generate:
 ..
-..     pandoc readme.rst -s -t man -o man/stpl.1
+..     pandoc README.rst -s -t man -o man/stpl.1
 
 NAME
 ====
@@ -208,11 +208,11 @@ They are python programs after all.
         </html>
 
 
-    Accessing undefined variables in a template raises ``NameError`` and stops rendering immediately.
-    This is standard python behavior and nothing new,
-    but vanilla python lacks an easy way to check the availability of a variable.
-    This quickly gets annoying if you want to support flexible inputs or use the
-    same template in different situations. These functions may help:
+Accessing undefined variables in a template raises ``NameError`` and stops rendering immediately.
+This is standard python behavior and nothing new,
+but vanilla python lacks an easy way to check the availability of a variable.
+This quickly gets annoying if you want to support flexible inputs or use the
+same template in different situations. These functions may help:
 
 
 *defined(name)*
@@ -238,7 +238,6 @@ They are python programs after all.
         % if defined('author'):
           <p>By {{ author }}</p>
         % end
-
 
 
 EXAMPLES
