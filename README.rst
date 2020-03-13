@@ -27,8 +27,10 @@ DESCRIPTION
 
 - takes a `bottle <https://bottlepy.org/docs/dev/stpl.html>`__
   SimpleTemplate file with extension **.stpl** and
-- expands the template to **stdout** or
-- to a directory, thereby dropping the **.stpl**
+- expands the template
+
+  - to **stdout** or
+  - to a directory, thereby dropping the **.stpl**
 
 Parameters:
 
@@ -36,6 +38,10 @@ Parameters:
 2) optional: directory or -
 3) optionally several: python code defining variables. Enclose with ''.
 4) optionally several: -I <include folder>
+
+To install for user only, do::
+
+   pip install --user stpl
 
 Usage from Python:
 
