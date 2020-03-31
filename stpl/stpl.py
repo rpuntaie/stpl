@@ -210,7 +210,9 @@ class SimpleTemplate(BaseTemplate):
         env.update(kwargs)
         if _name not in self.cache:
             self.cache[_name] = self.__class__(name=_name, lookup=self.lookup, syntax=self.syntax)
-        return self.cache[_name].execute(env['_stdout'], env)
+        env = self.cache[_name].execute(env['_stdout'], env)
+        retenv = {k:v for k,v in env.items() if k!='include'}
+        return retenv
 
     def execute(self, _stdout, kwargs):
         env = self.defaults.copy()
