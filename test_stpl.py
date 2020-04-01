@@ -375,6 +375,15 @@ class TestSTPLDir(unittest.TestCase):
         ''')
 
 
+    def test_end_keyword_on_same_line(self):
+        self.assertRenders('''
+            % if 1:
+            %    1; end
+            foo
+        ''', '''
+            foo
+        ''')
+
 import pytest
 from stpl import main
 import os
