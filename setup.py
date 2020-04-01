@@ -35,7 +35,7 @@ for dir in info_pages:
     data_files.append(('share/info', info_pages[dir]))    
 
 #also in README.rst
-__version__ = '1.13.3'
+__version__ = '1.13.4'
 #bottle_major+1.bottle_miner.local_fix
 
 def read(fname):
