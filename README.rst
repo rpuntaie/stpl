@@ -1,5 +1,5 @@
 ==============================
-stpl(1) Version 1.13.2 \| stpl
+stpl(1) Version 1.13.5 \| stpl
 ==============================
 
 ..   To test man page:
@@ -220,6 +220,9 @@ but vanilla python lacks an easy way to check the availability of a variable.
 This quickly gets annoying if you want to support flexible inputs or use the
 same template in different situations. These functions may help:
 
+*env*
+
+    Parent environment.
 
 *defined(name)*
 
