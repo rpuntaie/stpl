@@ -531,6 +531,7 @@ def main(**args):
         htmlout = '.html' in file #file = 'x.html.stpl'
         with open(file,'r',encoding='utf-8') as f:
             file_or_string = f.read()
+        file = os.path.abspath(file)
 
     g = globals()
     g['__file__'] = file

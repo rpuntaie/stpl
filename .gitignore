@@ -8,3 +8,4 @@ build
 .tox/
 tmp/
 .pytest_cache/
+.vscode
