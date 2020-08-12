@@ -12,7 +12,14 @@ import re
 import functools
 import shutil
 
+#also in README.rst
+#bottle_major+1.bottle_miner.local_fix
+__version__ = '1.13.6'
+
 DEBUG = False
+
+class TemplateError(Exception):
+    pass
 
 if sys.version_info.major > 2:
     unicode = str
@@ -61,9 +68,6 @@ def touni(s, enc='utf8', err='strict'):
     if isinstance(s, bytes):
         return s.decode(enc, err)
     return unicode("" if s is None else s)
-
-class TemplateError(Exception):
-    pass
 
 # A bug in functools causes it to break if the wrapper is an instance method
 def update_wrapper(wrapper, wrapped, *a, **ka):
@@ -498,6 +502,7 @@ def main(**args):
                 '''Expands bottle SimpleTemplate. See https://bottlepy.org/docs/dev/stpl.html.
                 - stands for stdin. If not a file, then the string is expanded.
                 ''')
+        parser.add_argument( '--version', action='version', version=__version__)
         parser.add_argument( '-I', action='append', metavar='folder', nargs=1,
                 help='Add folders to look for templates')
         parser.add_argument('file_or_string',

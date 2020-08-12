@@ -1,5 +1,5 @@
 ==============================
-stpl(1) Version 1.13.5 \| stpl
+stpl(1) Version 1.13.6 \| stpl
 ==============================
 
 ..   To test man page:

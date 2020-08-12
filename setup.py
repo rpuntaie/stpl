@@ -34,9 +34,8 @@ for dir in find_dirs('info'):
 for dir in info_pages:
     data_files.append(('share/info', info_pages[dir]))    
 
-#also in README.rst
-__version__ = '1.13.5'
-#bottle_major+1.bottle_miner.local_fix
+__version__ = [x.split()[2].strip("'") for x in open(
+    './stpl/stpl.py').readlines() if x.startswith('__version__')]
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname),encoding='utf-8').read()

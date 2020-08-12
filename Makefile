@@ -1,7 +1,11 @@
-.PHONY: test check dist up deploy mamchecker
+.PHONY: test check dist up man
 
 test:
 	py.test
+
+man:
+	pandoc README.rst -s -t man -o man/stpl.1
+	#pandoc README.rst -s -t man | /usr/bin/man -l -
 
 check:
 	restview --long-description --strict
