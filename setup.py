@@ -35,7 +35,7 @@ for dir in info_pages:
     data_files.append(('share/info', info_pages[dir]))    
 
 __version__ = [x.split()[2].strip("'") for x in open(
-    './stpl/stpl.py').readlines() if x.startswith('__version__')]
+    './stpl/stpl.py').readlines() if x.startswith('__version__')][0]
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname),encoding='utf-8').read()
