@@ -257,6 +257,7 @@ class SimpleTemplate(BaseTemplate):
         for dictarg in args:
             env.update(dictarg)
         env.update(kwargs)
+        env['__main_file__']=self.filename
         self.execute(stdout, env)
         return ''.join(stdout)
 
@@ -463,7 +464,7 @@ def template(*args, **kwargs):
     Template rendering arguments can be passed as dictionaries
     or directly (as keyword arguments).
     """
-    tpl = args[0] if args else None
+    tpl = args[0] if args else ''
     for dictarg in args[1:]:
         kwargs.update(dictarg)
     adapter = kwargs.pop('template_adapter', SimpleTemplate)
@@ -474,12 +475,12 @@ def template(*args, **kwargs):
         if isinstance(tpl, adapter):
             TEMPLATES[tplid] = tpl
             if settings: TEMPLATES[tplid].prepare(**settings)
-        elif "\n" in tpl or "{" in tpl or "%" in tpl or '$' in tpl:
+        elif tpl and ("\n" in tpl or "{" in tpl or "%" in tpl or '$' in tpl):
             TEMPLATES[tplid] = adapter(source=tpl, lookup=lookup, **settings)
         else:
             TEMPLATES[tplid] = adapter(name=tpl, lookup=lookup, **settings)
     if not TEMPLATES[tplid]:
-        abort(500, 'Template (%s) not found' % tpl)
+        os.abort(500, 'Template (%s) not found' % tpl)
     return TEMPLATES[tplid].render(kwargs)
 
 
