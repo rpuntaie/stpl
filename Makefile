@@ -10,9 +10,9 @@ man:
 check:
 	restview --long-description --strict
 
-dist:
+dist: test man
 	sudo python setup.py bdist_wheel
 
-up:
+up: dist
 	twine upload dist/`ls dist -rt | tail -1`
 
