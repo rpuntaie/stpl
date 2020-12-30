@@ -257,10 +257,9 @@ class SimpleTemplate(BaseTemplate):
         for dictarg in args:
             env.update(dictarg)
         env.update(kwargs)
-        env['__main_file__']=self.filename
+        env['__main_file__'] = kwargs.get('__main_file__') or self.filename
         self.execute(stdout, env)
         return ''.join(stdout)
-
 
 class StplSyntaxError(TemplateError):
     pass
@@ -481,7 +480,7 @@ def template(*args, **kwargs):
             TEMPLATES[tplid] = adapter(name=tpl, lookup=lookup, **settings)
     if not TEMPLATES[tplid]:
         os.abort(500, 'Template (%s) not found' % tpl)
-    return TEMPLATES[tplid].render(kwargs)
+    return TEMPLATES[tplid].render(**kwargs)
 
 
 g_include = []
@@ -541,6 +540,7 @@ def main(**args):
 
     g = globals()
     g['__file__'] = file
+    g['__main_file__'] = filename
 
     outfile = None
     opnwrite = lambda x: open(x,'w',encoding='utf-8')
