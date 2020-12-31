@@ -1,4 +1,4 @@
-.PHONY: test check dist up man
+.PHONY: test check dist up man tag devinstall
 
 test:
 	py.test
@@ -16,3 +16,12 @@ dist: test man
 up: dist
 	twine upload dist/`ls dist -rt | tail -1`
 
+devinstall:
+	sudo pip install -e .
+
+tag: devinstall
+	$(eval TAGMSG="v$(shell stpl --version | cut -d ' ' -f 2)")
+	echo $(TAGMSG)
+	git tag -s $(TAGMSG) -m"$(TAGMSG)"
+	git verify-tag $(TAGMSG)
+	git push origin $(TAGMSG) --follow-tags
